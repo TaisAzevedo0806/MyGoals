@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { Button, FlatList, StyleSheet, View } from "react-native";
 import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
 
 export default function App() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+
+  function showAddGoalModalHandler() {
+    setIsModalVisible(true);
+  }
 
   function addGoalHandler(goalText) {
     setGoals((currentGoals) => [
@@ -21,12 +26,23 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button
+        title="Add New Goal"
+        color="#5e0acc"
+        onPress={showAddGoalModalHandler}
+      />
+      <GoalInput isVisible={isModalVisible} onAddGoal={addGoalHandler} />
       <View style={styles.goalsContainer}>
         <FlatList
           data={goals}
           renderItem={(itemData) => {
-            return <GoalItem onPress={deleteGoalHandler} text={itemData.item.text} />;
+            return (
+              <GoalItem
+                onPress={deleteGoalHandler}
+                id={itemData.item.id}
+                text={itemData.item.text}
+              />
+            );
           }}
           keyExtractor={(item, index) => {
             return item.id;
