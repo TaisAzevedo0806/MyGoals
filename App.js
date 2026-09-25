@@ -11,11 +11,16 @@ export default function App() {
     setIsModalVisible(true);
   }
 
+  function closeAddGoalModalHandler() {
+    setIsModalVisible(false)
+  }
+
   function addGoalHandler(goalText) {
     setGoals((currentGoals) => [
       ...currentGoals,
       { text: goalText, id: Math.random().toString() }, // 'key' property works without 'keyExtractor'
     ]);
+    closeAddGoalModalHandler()
   }
 
   function deleteGoalHandler(id) {
@@ -31,7 +36,7 @@ export default function App() {
         color="#5e0acc"
         onPress={showAddGoalModalHandler}
       />
-      <GoalInput isVisible={isModalVisible} onAddGoal={addGoalHandler} />
+      <GoalInput isVisible={isModalVisible} onAddGoal={addGoalHandler} onCancel={closeAddGoalModalHandler} />
       <View style={styles.goalsContainer}>
         <FlatList
           data={goals}
